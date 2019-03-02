@@ -1,0 +1,51 @@
+canvas {
+    max-width: 150px;
+    max-height: 150px;
+    margin: auto;
+    border: 1px solid #d3d3d3;
+    position: relative;
+}
+
+.timer_btn {
+    width: 60px;
+    height: 28px;
+    border: 1px;
+    position: relative;
+    top: 30%;
+    right: 140px;
+    text-align: center;
+}
+
+#timer_box {
+    max-height: 400px;
+    max-width: 300px;
+}
+
+#timer_title, #wow {
+    font-family: "Autour One";
+    font-size: 18px;
+    font-weight: normal;
+    margin: 2px;
+}
+
+#wow {
+    position: relative;
+    top: 50px;
+    left: 53px;
+}
+
+#timer_description {
+    font-family: "David Libre";
+    font-size: 12px;
+    margin: 5px;
+}
+
+#start_btn {
+    color: white;
+    background-color: green;
+}
+
+#stop_btn {
+    color: white;
+    background-color: red;
+}
