@@ -96,6 +96,12 @@ window.onload = function() {
         function setRunningFunc() {
             runningFunc = setInterval(updateTimer, interval);
         }
+
+        function changeBtnColor(btnName, color) {
+            let startCom = "start";
+            let stopCom = "stop";
+            
+        }
     }
     
     function updateTimer() {
@@ -147,13 +153,13 @@ window.onload = function() {
         }
     }
 
-    function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
     function zeroTimeVars() {
         mil = 0;
         sec = 0;
         min = 0;
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 };
