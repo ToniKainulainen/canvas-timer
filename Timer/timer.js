@@ -25,15 +25,17 @@ window.onload = function() {
     ctx.fillText(txt, xTxt, yTxt);
 
     function initializeComponents() {
-        var startBtn = document.getElementById("start_btn"),
-            stopBtn = document.getElementById("stop_btn"),
+        var //startBtn = document.getElementById("start_btn"), //no
+            //stopBtn = document.getElementById("stop_btn"), //no
+            startBtn = new Button(document.getElementById("start_btn"), startTimer),
+            stopBtn = new Button(document.getElementById("stop_btn"), stopTimer),
             running = false,
             pressedStart = false;
         
         var runningFunc; // a variable to store the return value of setInterval()
 
-        startBtn.addEventListener("click", startTimer);
-        stopBtn.addEventListener("click", stopTimer);
+        //startBtn.addEventListener("click", startTimer); //no
+        //stopBtn.addEventListener("click", stopTimer); //no
 
         ctx.font = txtSize + " " + font;
 
@@ -42,19 +44,23 @@ window.onload = function() {
         function startTimer() {
             // two ifs to get the color of the timer buttons correct
             if(!running && pressedStart) {
-                stopBtn.style.backgroundColor = "red";
-                stopBtn.innerHTML = "Stop";
+                //stopBtn.style.backgroundColor = "red"; //no
+                stopBtn.changeColor("red");
+                //stopBtn.innerHTML = "Stop"; //no
+                stopBtn.setInnerHTML("Stop");
                 document.getElementById("wow").innerHTML = "Wow";
                 setRunningFunc();
                 console.log("Timer resumed.");
-                startBtn.style.backgroundColor = "gray";
+                //startBtn.style.backgroundColor = "gray"; //no
+                startBtn.changeColor("gray");
                 running = true;
             }
             else if(!running) {
                 setRunningFunc();
                 document.getElementById("wow").innerHTML = "Wow";
                 console.log("Timer started.");
-                startBtn.style.backgroundColor = "gray";
+                //startBtn.style.backgroundColor = "gray"; //no
+                startBtn.changeColor("gray");
                 running = true;
                 pressedStart = true;
             }
@@ -66,10 +72,14 @@ window.onload = function() {
                 window.clearInterval(runningFunc);
                 console.log("Timer stopped.");
 
-                stopBtn.style.backgroundColor = "goldenRod";
-                stopBtn.innerHTML = "Clear";
-                startBtn.style.backgroundColor = "mediumBlue";
-                startBtn.innerHTML = "Resume";
+                //stopBtn.style.backgroundColor = "goldenRod"; //no
+                stopBtn.changeColor("goldenRod");
+                //stopBtn.innerHTML = "Clear"; //no
+                stopBtn.setInnerHTML("Clear");
+                //startBtn.style.backgroundColor = "mediumBlue"; //no
+                startBtn.changeColor("mediumBlue"); //no
+                //startBtn.innerHTML = "Resume"; //no
+                startBtn.setInnerHTML("Resume");
                 running = false;
             }
             // clears the timer
@@ -83,10 +93,14 @@ window.onload = function() {
                 zeroTimeVars();
 
                 // sets timer buttons to start positions
-                startBtn.style.backgroundColor = "green";
-                startBtn.innerHTML = "Start";
-                stopBtn.style.backgroundColor = "red";
-                stopBtn.innerHTML = "Stop";
+                //startBtn.style.backgroundColor = "green"; //no
+                startBtn.changeColor("green");
+                //startBtn.innerHTML = "Start"; //no
+                startBtn.setInnerHTML("Start");
+                //stopBtn.style.backgroundColor = "red"; //no
+                stopBtn.changeColor("red");
+                //stopBtn.innerHTML = "Stop"; //no
+                stopBtn.setInnerHTML("Stop");
 
                 console.log("Timer cleared.");
                 pressedStart = false;
@@ -97,11 +111,44 @@ window.onload = function() {
             runningFunc = setInterval(updateTimer, interval);
         }
 
+        /*
         function changeBtnColor(btnName, color) {
             let startCom = "start";
             let stopCom = "stop";
             
+            if(startCom.localeCompare(btnName.toLowerCase()) === 0) {
+                startBtn.style.backgroundColor = color;
+            }
+            else if(stopCom.localeCompare(btnName.toLowerCase()) === 0) {
+                stopBtn.style.backgroundColor = color;
+                stopBtn.style.getPropertyValue("backgroundColor")
+            }
         }
+        */
+
+        // an object
+        /*
+        function Button(btnElement, action) {
+            this.btn = btnElement;
+            this.btn.addEventListener("click", action);
+            this.setInnerHTML = function (text) {
+                this.btn.innerHTML = text;
+            }
+            this.changeColor = function (color) {
+                this.btn.style.backgroundColor = color;
+            }
+        }
+        */
+        /* // ES2015 class
+        class Button {
+            constructor(btnElement) {
+                this.btn = btnElement;
+                this.changeColor = function (color) {
+                    this.btn.style.backgroundColor = color;
+                };
+            }
+        }
+        */
     }
     
     function updateTimer() {
@@ -161,5 +208,16 @@ window.onload = function() {
 
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function Button(btnElement, action) {
+        this.btn = btnElement;
+        this.btn.addEventListener("click", action);
+        this.setInnerHTML = function (text) {
+            this.btn.innerHTML = text;
+        }
+        this.changeColor = function (color) {
+            this.btn.style.backgroundColor = color;
+        }
     }
 };
