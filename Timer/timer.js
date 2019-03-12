@@ -45,6 +45,22 @@ window.onload = function() {
                 startBtn.changeColor("gray");
                 running = true;
             }
+            /* // Kokeilu ilman pressedStart  muuttujaa ja yritys helpottaa koodin luettavuutta.
+            if(running) {
+                stopBtn.changeColor("red", "Stop");
+                document.getElementById("wow").innerHTML = "Wow";
+                runningFunc = setInterval(updateTimer, interval);
+                console.log("Timer resumed.");
+                startBtn.changeColor("gray");
+                //running = false;
+            }
+            */
+            // järjestys, jossa kello ei pysähdy
+            /*  Timer started
+                Timer resumed
+                Timer stopped
+                Timer cleared
+            */
             else if(!running) {
                 runningFunc = setInterval(updateTimer, interval);
                 document.getElementById("wow").innerHTML = "Wow";
