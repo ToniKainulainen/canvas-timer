@@ -4,8 +4,15 @@ window.onload = function() {
 };
 
 function Timer() {
-    this.sec = 0;
+    this.millis = 0;
+    this.seconds = 0;
+    this.minutes = 0;
+
     this.start = function() {
-        //console.log(this.sec);
+        //console.log(this.seconds);
+    };
+    
+    this.stop = function() {
+
     };
 }
