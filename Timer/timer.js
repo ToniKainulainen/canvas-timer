@@ -1,186 +1,90 @@
 window.onload = function() {
-    //canvas variables
-    var canvas = document.getElementById("canvas"),
-        ctx = canvas.getContext("2d"),
-        wCanvas = canvas.width,
-        hCanvas = canvas.height,
-        txt = "00:00.00",
-        txtSize = "30px",
-        font = "Georgia",
-        xTxt = wCanvas /2,
-        yTxt = hCanvas /2,
-    // interval variables
-        count = 0,
-        interval = 10,
-    // time variables
-        mil = 0,
-        sec = 0,
-        min = 0,
-        milTxt = "",
-        secTxt = "",
-        minTxt = "";
+    var startBtn = this.document.getElementById("start-btn");
+    var stopBtn = this.document.getElementById("stop-btn");
 
-    initializeComponents();
-    ctx.textAlign = "center";
-    ctx.fillText(txt, xTxt, yTxt);
+    var timer = new Timer("timer");
 
-    function initializeComponents() {
-        var startBtn = new Button(document.getElementById("start_btn"), startTimer),
-            stopBtn = new Button(document.getElementById("stop_btn"), stopTimer),
-            running = false,
-            pressedStart = false,
-            runningFunc = null; // a variable to store the return value of setInterval()
-
-        ctx.font = txtSize + " " + font;
-
-        console.log("components initiliazed");
-
-        function startTimer() {
-            // two ifs to get the color of the timer buttons correct
-            if(!running && pressedStart) {
-                stopBtn.changeColor("red", "Stop");
-                document.getElementById("wow").innerHTML = "Wow";
-                runningFunc = setInterval(updateTimer, interval);
-                console.log("Timer resumed.");
-                startBtn.changeColor("gray");
-                running = true;
-            }
-            else if(!running) {
-                runningFunc = setInterval(updateTimer, interval);
-                document.getElementById("wow").innerHTML = "Wow";
-                console.log("Timer started.");
-                startBtn.changeColor("gray");
-                running = true;
-                pressedStart = true;
-            }
-
-        } // end of startTimer()
-
-        function stopTimer() {
-
-            // pauses the timer
-            if(running) {
-                window.clearInterval(runningFunc);
-                console.log("Timer stopped.");
-
-                stopBtn.changeColor("goldenRod", "Clear");
-                startBtn.changeColor("mediumBlue", "Resume");
-                running = false;
-            }
-
-            // clears the timer
-            else {
-                // sets timer text to 0
-                txt = "00:00.00";
-                clearCanvas();
-                ctx.fillText(txt, xTxt, yTxt);
-                document.getElementById("wow").innerHTML = "";
-
-                zeroTimeVars();
-
-                // sets timer buttons to start positions
-                startBtn.changeColor("green", "Start");
-                stopBtn.changeColor("red", "Stop");
-
-                console.log("Timer cleared.");
-                pressedStart = false;
-            }
-
-        } // end of stopTimer()   
-
-    } // end of initializeComponents()
+    this.console.log(timer.timeStr());
     
-    function updateTimer() {
-        clearCanvas();
-        ctx.fillText(txt, xTxt, yTxt);
-        count++;
-        trackTime();
-        setTxt();
-
-        function trackTime() {
-            if(count === 1) {
-                mil++;
-                count = 0;    
-            }
-            if(mil === 100) {
-                sec++;
-                mil = 0;
-            }
-            if(sec === 60) {
-                min++;
-                sec = 0;
-            }
-            
-        }
-
-        function setTxt() {
-            if(mil < 10) {
-                milTxt = "0" + mil.toString();
-            }
-            else {
-                milTxt = mil.toString();
-            }
-
-            if(sec < 10) {
-                secTxt = "0" + sec.toString();
-            }
-            else {
-                secTxt = sec.toString();
-            }
-
-            if(min < 10) {
-                minTxt = "0" + min.toString();
-            }
-            else {
-                minTxt = min.toString();
-            }
-
-            txt = "";
-            txt = txt.concat(minTxt, ":", secTxt, ".", milTxt);
-
-        }// setTxt()
-
-    }// updateTimer()
-
-    function zeroTimeVars() {
-        mil = 0;
-        sec = 0;
-        min = 0;
-    }
-
-    function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    // tradional object
-    function Button(btnElement, action) {
-        this.btn = btnElement;
-        this.btn.addEventListener("click", action);
-
-        this.setInnerHTML = function (btnText) {
-            this.btn.innerHTML = btnText;
-        }
-        
-        this.changeColor = function (color, btnTxt = null) {
-            if(btnTxt != null) {
-                this.btn.style.backgroundColor = color;
-                this.setInnerHTML(btnTxt);
-            }
-            else {
-                this.btn.style.backgroundColor = color;
-            }
-        }
-
-    }// end of Button class
-
-    /* // ES2015 class
-        class Button {
-            constructor(btnElement) {
-                this.btn = btnElement;
-                this.changeColor = function (color) {
-                    this.btn.style.backgroundColor = color;
-                };
-            }
-        }
-    */
+    startBtn.addEventListener("click", timer.startCount);
+    stopBtn.addEventListener("click", timer.stopCount);
+    
 };
+
+function Timer(elementId) {
+
+    this.minutes = 0;
+    this.seconds = 0;
+    this.milliseconds = 0;
+    this.time = ["0","00","00"];
+
+    var self = this;
+    var timeOut;
+    var element = document.getElementById(elementId);
+
+    this.timeStr = () => this.time.toString().replace(/,/g, ":");
+
+    this.startCount = function() {
+        timeCount();
+        console.log("counting");
+    };
+
+    this.stopCount = function() {
+        clearTimeout(timeOut);
+        console.log("counting stopped");
+    };
+
+    function timeCount() {
+        // tänne tulee elementin sisällön päivitys ja ajan näyttäminen
+        insertToDoc();
+
+        setMilliseconds();
+        setSeconds();
+        setMinutes();
+
+        timeOut = setTimeout(() => {timeCount()}, 10);
+    };
+
+    function insertToDoc() {
+        if(element.nodeName !== "INPUT") {
+            element.innerHTML = self.timeStr();
+        }
+        else {
+            element.value = self.timeStr();
+        }
+    };
+ 
+    function setMilliseconds() {
+        self.milliseconds += 1;
+
+        if(self.milliseconds < 10) {
+            // to avoid automatic type conversation
+            var zero = "0";
+            self.time[2] = zero.concat(self.milliseconds.toString());
+        }
+        else {
+            self.time[2] = "" + self.milliseconds;
+            if(self.milliseconds === 100) {
+                self.seconds += 1;
+                self.milliseconds = 0;
+            }
+        }
+    };
+
+    function setSeconds() {
+        if(self.seconds < 10) {
+            var zero = "0";
+            self.time[1] = zero.concat(self.seconds.toString());
+        }
+        else {
+            self.time[1] = "" + self.seconds;
+            if(self.seconds === 60) {
+                self.minutes += 1;
+            }
+        }
+    };
+
+    function setMinutes() {
+        self.time[0] = self.minutes.toString();
+    };
+}
