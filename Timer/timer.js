@@ -1,105 +1,90 @@
 window.onload = function() {
-    //var element = this.document.getElementById("input");
-    //this.console.log(element.nodeName);
     var startBtn = this.document.getElementById("start-btn");
     var stopBtn = this.document.getElementById("stop-btn");
+
     var timer = new Timer("timer");
-    this.console.log(timer.time);
-    stopBtn.addEventListener("click", timer.stopCount());
-    startBtn.addEventListener("click", timer.startCount());
+
+    this.console.log(timer.timeStr());
+    
+    startBtn.addEventListener("click", timer.startCount);
+    stopBtn.addEventListener("click", timer.stopCount);
+    
 };
 
-// liian vaikea kokeile setInterval funtiota mieluummin
-
 function Timer(elementId) {
-    //this.element = document.getElementById(elementId);
-    
+
     this.minutes = 0;
     this.seconds = 0;
     this.milliseconds = 0;
     this.time = ["0","00","00"];
 
-    var on = false;
+    var self = this;
     var timeOut;
     var element = document.getElementById(elementId);
 
-    
-
-    this.getTimeStr = () => this.time.toString().replace(/,/g, ":");
+    this.timeStr = () => this.time.toString().replace(/,/g, ":");
 
     this.startCount = function() {
-        //console.log(this.seconds);
-        if(!on) {
-            on = true;
-            this.timeCount();
-        }
+        timeCount();
+        console.log("counting");
     };
 
     this.stopCount = function() {
-        if(on) {
-            clearTimeout(timeOut);
-            on = false;
-        }
+        clearTimeout(timeOut);
+        console.log("counting stopped");
     };
 
-    this.timeCount = function() {
+    function timeCount() {
         // tänne tulee elementin sisällön päivitys ja ajan näyttäminen
-        this.insertToDoc();
+        insertToDoc();
 
-        this.setMilliseconds();
-        this.setSeconds();
-        this.setMinutes();
+        setMilliseconds();
+        setSeconds();
+        setMinutes();
 
-        timeOut = setTimeout(this.timeCount(), 10);
+        timeOut = setTimeout(() => {timeCount()}, 10);
     };
 
-    this.insertToDoc = function() {
-        if(!element.nodeName === "INPUT") {
-            //this.element.innerHTML = this.time.toString.replace(",", ":");
-            element.innerHTML = this.getTimeStr();
+    function insertToDoc() {
+        if(element.nodeName !== "INPUT") {
+            element.innerHTML = self.timeStr();
         }
         else {
-            //this.element.value = this.time.toString.replace(",", ":");
-            element.value = this.getTimeStr();
+            element.value = self.timeStr();
         }
     };
  
-    this.setMilliseconds = function() {
-        this.milliseconds += 1;
+    function setMilliseconds() {
+        self.milliseconds += 1;
 
-        if(this.milliseconds < 10) {
-            this.time[2] = "0" + this.milliseconds; // to avoid automatic type conversation
-            /*
+        if(self.milliseconds < 10) {
+            // to avoid automatic type conversation
             var zero = "0";
-            this.time[2] = zero.concat(this.milliseconds.toString());
-            */
+            self.time[2] = zero.concat(self.milliseconds.toString());
         }
         else {
-            this.time[2] = "" + this.milliseconds;
-            if(this.milliseconds === 100) {
-                this.seconds += 1;
-                this.milliseconds = 0;
+            self.time[2] = "" + self.milliseconds;
+            if(self.milliseconds === 100) {
+                self.seconds += 1;
+                self.milliseconds = 0;
             }
         }
     };
 
-    this.setSeconds = function() {
-        if(this.seconds < 10) {
-            //this.time[1] = "0" + this.seconds; // to avoid automatic type conversation
+    function setSeconds() {
+        if(self.seconds < 10) {
             var zero = "0";
-            this.time[1] = zero.concat(this.seconds.toString());
+            self.time[1] = zero.concat(self.seconds.toString());
         }
         else {
-            this.time[1] = "" + this.seconds;
-            if(this.seconds === 60) {
-                this.minutes += 1;
+            self.time[1] = "" + self.seconds;
+            if(self.seconds === 60) {
+                self.minutes += 1;
             }
         }
     };
 
-    this.setMinutes = function() {
-        this.time[0] = this.minutes.toString();
+    function setMinutes() {
+        self.time[0] = self.minutes.toString();
     };
-
-    
 }
