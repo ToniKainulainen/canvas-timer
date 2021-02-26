@@ -36,7 +36,7 @@ function WormGame(canvas) {
 	
 	game.score = 0;
 	
-	var borders = {
+	let borders = {
 		width: this.canvas.clientWidth,
 		height: this.canvas.clientHeight,
 		left: 0,
