@@ -36,7 +36,7 @@ function WormGame(canvas) {
 	
 	game.score = 0;
 	
-	game.borders = {
+	var borders = {
 		width: this.canvas.clientWidth,
 		height: this.canvas.clientHeight,
 		left: 0,
@@ -172,10 +172,10 @@ function WormGame(canvas) {
 		
 		switch(target) {
 			case "borders":
-				if((game.worm.x > (game.borders.left - game.worm.width)) &&
-				(game.worm.xRight < (game.borders.right + game.worm.width)) &&
-				(game.worm.y > (game.borders.top - game.worm.width)) &&
-				(game.worm.yBottom < (game.borders.bottom + game.worm.width))) {
+				if((game.worm.x > (borders.left - game.worm.width)) &&
+				(game.worm.xRight < (borders.right + game.worm.width)) &&
+				(game.worm.y > (borders.top - game.worm.width)) &&
+				(game.worm.yBottom < (borders.bottom + game.worm.width))) {
 					collision = false;
 				}
 			break;
