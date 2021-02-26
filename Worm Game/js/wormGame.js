@@ -32,7 +32,8 @@ function WormGame(canvas) {
 	let game = this;
 	game.canvas = canvas;
 	game.playSpeed = 1;
-	game.controls = {left: 37, up: 38, right: 39, down: 40};
+//	game.controls = {left: 37, up: 38, right: 39, down: 40}; // arrow keys
+	game.controls = {left: 65, up: 87, right: 68, down: 83}; //
 	
 	game.score = 0;
 	
@@ -114,7 +115,9 @@ function WormGame(canvas) {
 		if(game.collision("treat")){
 			growWorm();
 			game.score += 1;
-			game.playSpeed +=0.1;
+			game.playSpeed +=0.14;
+			
+			console.log(game.playSpeed);
 				
 			do {
 				game.treat.x = game.randomCoordinate(game.canvas.clientWidth);
