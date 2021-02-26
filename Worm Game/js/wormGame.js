@@ -96,32 +96,14 @@ function WormGame(canvas) {
 		}
 	}
 	
-//	game.setWormCoordinates = function() {
-//		game.worm.pieces[0].x = game.adjust(game.worm.x, game.worm.width);
-//		game.worm.pieces[0].y = game.adjust(game.worm.y, game.worm.height);
-//		
-//		if((game.worm.pieces[0].x != game.worm.pieces[0].lastX) 
-//			|| (game.worm.pieces[0].y != game.worm.pieces[0].lastY)) {
-//					
-//			for(i=1; i<game.worm.pieces.length; i++) {
-//				game.worm.pieces[i].x = game.worm.pieces[i-1].lastX;
-//				game.worm.pieces[i].y = game.worm.pieces[i-1].lastY;
-//			}
-//				
-//			game.worm.pieces[0].lastX = game.worm.pieces[0].x;
-//			game.worm.pieces[0].lastY = game.worm.pieces[0].y;
-//				
-//			for(i=1; i<game.worm.pieces.length; i++) {
-//				game.worm.pieces[i].lastX = game.worm.pieces[i].x;
-//				game.worm.pieces[i].lastY = game.worm.pieces[i].y;
-//			}	
-//		}
-//	}
-	
-	game.growWorm = function() {
+	function growWorm() {
 		let lastPiece = game.worm.pieces[game.worm.pieces.length-1];
 		game.worm.pieces.push(new gamePiece(lastPiece.lastX, lastPiece.lastY));
 	}
+//	game.growWorm = function() {
+//		let lastPiece = game.worm.pieces[game.worm.pieces.length-1];
+//		game.worm.pieces.push(new gamePiece(lastPiece.lastX, lastPiece.lastY));
+//	}
 	
 	game.treat = new gamePiece(150,150,0,0);
 	game.treat.color = "green";
@@ -158,11 +140,11 @@ function WormGame(canvas) {
 	}
 	
 	game.update = function() {
-//		game.setWormCoordinates();
 		setWormCoordinates();
 		
 		if(game.collision("treat")){
-			game.growWorm();
+//			game.growWorm();
+			growWorm();
 			game.score += 1;
 				
 			do {
