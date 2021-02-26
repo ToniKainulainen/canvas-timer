@@ -114,6 +114,7 @@ function WormGame(canvas) {
 		if(game.collision("treat")){
 			growWorm();
 			game.score += 1;
+			game.playSpeed +=0.5;
 				
 			do {
 				game.treat.x = game.randomCoordinate(game.canvas.clientWidth);
