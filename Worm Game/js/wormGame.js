@@ -100,10 +100,6 @@ function WormGame(canvas) {
 		let lastPiece = game.worm.pieces[game.worm.pieces.length-1];
 		game.worm.pieces.push(new gamePiece(lastPiece.lastX, lastPiece.lastY));
 	}
-//	game.growWorm = function() {
-//		let lastPiece = game.worm.pieces[game.worm.pieces.length-1];
-//		game.worm.pieces.push(new gamePiece(lastPiece.lastX, lastPiece.lastY));
-//	}
 	
 	game.treat = new gamePiece(150,150,0,0);
 	game.treat.color = "green";
@@ -143,7 +139,6 @@ function WormGame(canvas) {
 		setWormCoordinates();
 		
 		if(game.collision("treat")){
-//			game.growWorm();
 			growWorm();
 			game.score += 1;
 				
@@ -265,7 +260,7 @@ function WormGame(canvas) {
 	game.adjust = function(coordinate, measurement) {
 		let adjustment;
 		let modulo = coordinate % measurement;
-		let halfPoint = game.halfPoint(measurement);
+		let halfPoint = measurement/2;
 		
 		if(modulo <= halfPoint) {
 			adjustment = coordinate - modulo;
