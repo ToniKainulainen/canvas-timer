@@ -36,19 +36,6 @@ function WormGame(canvas) {
 	
 	game.score = 0;
 	
-	let borders = {
-		width: this.canvas.clientWidth,
-		height: this.canvas.clientHeight,
-		left: 0,
-		top: 0,
-		get right() {
-			return this.left + this.width;
-		},
-		get bottom() {
-			return this.top + this.height;
-		}
-	};
-	
 	game.worm = {
 		width: 15,
 		height: 15,
@@ -74,37 +61,23 @@ function WormGame(canvas) {
 		currentDirection: this.controls.right
 	};
 	
-	function setWormCoordinates() {
-		game.worm.pieces[0].x = game.adjust(game.worm.x, game.worm.width);
-		game.worm.pieces[0].y = game.adjust(game.worm.y, game.worm.height);
-		
-		if((game.worm.pieces[0].x != game.worm.pieces[0].lastX) 
-			|| (game.worm.pieces[0].y != game.worm.pieces[0].lastY)) {
-					
-			for(i=1; i<game.worm.pieces.length; i++) {
-				game.worm.pieces[i].x = game.worm.pieces[i-1].lastX;
-				game.worm.pieces[i].y = game.worm.pieces[i-1].lastY;
-			}
-				
-			game.worm.pieces[0].lastX = game.worm.pieces[0].x;
-			game.worm.pieces[0].lastY = game.worm.pieces[0].y;
-				
-			for(i=1; i<game.worm.pieces.length; i++) {
-				game.worm.pieces[i].lastX = game.worm.pieces[i].x;
-				game.worm.pieces[i].lastY = game.worm.pieces[i].y;
-			}	
-		}
-	}
-	
-	function growWorm() {
-		let lastPiece = game.worm.pieces[game.worm.pieces.length-1];
-		game.worm.pieces.push(new gamePiece(lastPiece.lastX, lastPiece.lastY));
-	}
-	
 	game.treat = new gamePiece(150,150,0,0);
 	game.treat.color = "green";
 	
 	game.treatOnBoard = false;
+	
+		let borders = {
+		width: this.canvas.clientWidth,
+		height: this.canvas.clientHeight,
+		left: 0,
+		top: 0,
+		get right() {
+			return this.left + this.width;
+		},
+		get bottom() {
+			return this.top + this.height;
+		}
+	};
 	
 	game.start = function() {
 		// initiateWorm
@@ -253,10 +226,6 @@ function WormGame(canvas) {
 		game.worm.update();
 	}
 	
-	game.halfPoint = function(measurement) {
-		return measurement/2;
-	}
-	
 	game.adjust = function(coordinate, measurement) {
 		let adjustment;
 		let modulo = coordinate % measurement;
@@ -274,6 +243,33 @@ function WormGame(canvas) {
 	game.randomCoordinate = function(max) {
 		let coordinate = Math.floor(Math.random() * (max-(game.worm.width + 1)));
 		return game.adjust(coordinate, game.worm.width);
+	}
+	
+		function setWormCoordinates() {
+		game.worm.pieces[0].x = game.adjust(game.worm.x, game.worm.width);
+		game.worm.pieces[0].y = game.adjust(game.worm.y, game.worm.height);
+		
+		if((game.worm.pieces[0].x != game.worm.pieces[0].lastX) 
+			|| (game.worm.pieces[0].y != game.worm.pieces[0].lastY)) {
+					
+			for(i=1; i<game.worm.pieces.length; i++) {
+				game.worm.pieces[i].x = game.worm.pieces[i-1].lastX;
+				game.worm.pieces[i].y = game.worm.pieces[i-1].lastY;
+			}
+				
+			game.worm.pieces[0].lastX = game.worm.pieces[0].x;
+			game.worm.pieces[0].lastY = game.worm.pieces[0].y;
+				
+			for(i=1; i<game.worm.pieces.length; i++) {
+				game.worm.pieces[i].lastX = game.worm.pieces[i].x;
+				game.worm.pieces[i].lastY = game.worm.pieces[i].y;
+			}	
+		}
+	}
+	
+	function growWorm() {
+		let lastPiece = game.worm.pieces[game.worm.pieces.length-1];
+		game.worm.pieces.push(new gamePiece(lastPiece.lastX, lastPiece.lastY));
 	}
 	
 	function gamePiece(x,y, lastX, lastY) {
