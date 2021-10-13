@@ -1,1 +1,1 @@
-This is my local text.
+Here is text in remote repo.
